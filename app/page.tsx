@@ -157,7 +157,7 @@ export default function ConsultationForm() {
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
 
   useEffect(() => {
-    fetch("/api/slots")
+    fetch(`/api/slots?t=${Date.now()}`)
       .then((res) => res.json())
       .then((data) => {
         setSlots(data);
