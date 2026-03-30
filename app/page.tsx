@@ -269,7 +269,8 @@ export default function ConsultationForm() {
           <h2 className="text-xl font-bold text-gray-800 mb-3">送信完了</h2>
           <p className="text-gray-600 text-sm leading-relaxed">
             お申し込みありがとうございます。<br />
-            確定のご連絡をお待ちください。
+            メールにてお申込内容をお送りしましたので<br />
+            メールフォルダも含めご確認のお願いします。
           </p>
         </div>
       </main>
@@ -765,7 +766,7 @@ export default function ConsultationForm() {
               )}
             </button>
             <p className="text-xs text-gray-400 text-center mt-3">
-              送信後、確定のご連絡をお待ちください。
+              送信後、メールにてお申込内容をお送りします。
             </p>
           </div>
         </form>
