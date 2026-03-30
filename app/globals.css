@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-gray-50 text-gray-800;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  select,
+  textarea {
+    font-size: 16px; /* Prevents iOS zoom on focus */
+  }
+}
+
+@layer components {
+  .form-label {
+    @apply block text-sm font-semibold text-gray-700 mb-1;
+  }
+
+  .required-mark {
+    @apply text-red-500 ml-1 text-xs;
+  }
+
+  .form-input {
+    @apply w-full border border-gray-300 rounded-md px-3 py-2 text-base
+      focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500
+      bg-white placeholder-gray-400;
+  }
+
+  .form-radio-label {
+    @apply flex items-center gap-2 cursor-pointer text-sm text-gray-700
+      py-1;
+  }
+
+  .form-checkbox-label {
+    @apply flex items-start gap-2 cursor-pointer text-sm text-gray-700
+      py-1;
+  }
+
+  .section-divider {
+    @apply border-t border-gray-200 pt-6 mt-6;
+  }
+
+  .slot-radio-label {
+    @apply flex items-center gap-3 cursor-pointer text-sm font-medium
+      text-gray-700 border border-gray-200 rounded-lg px-4 py-3 bg-white
+      hover:border-teal-400 hover:bg-teal-50 transition-colors;
+  }
+
+  .slot-radio-label.selected {
+    @apply border-teal-500 bg-teal-50 text-teal-700;
+  }
+}
