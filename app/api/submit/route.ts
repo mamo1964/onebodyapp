@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { Resend } from "resend";
 
 const CHATWORK_API_TOKEN = "b8135c68df88cf8b9116b2f055ce9803";
 const CHATWORK_ROOM_ID = "18494769";
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 interface SubmitPayload {
   name: string;
@@ -101,6 +103,32 @@ async function sendChatworkMessage(message: string): Promise<void> {
   }
 }
 
+async function sendConfirmationEmail(payload: SubmitPayload, slotLabel: string): Promise<void> {
+  await resend.emails.send({
+    from: "ワンボディウェルネス <onboarding@resend.dev>",
+    to: payload.email,
+    subject: "【ワンボディウェルネス】個別相談のお申し込みを受け付けました",
+    html: `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h2 style="color: #0d9488;">【ワンボディウェルネス】個別相談 お申し込み確認</h2>
+        <p>${payload.name} 様</p>
+        <p>このたびは個別相談にお申し込みいただきありがとうございます。<br>以下の内容でお申し込みを受け付けました。</p>
+        <hr style="border: 1px solid #e5e7eb; margin: 20px 0;" />
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr><td style="padding: 8px 0; color: #6b7280; width: 40%;">お名前</td><td style="padding: 8px 0;">${payload.name}</td></tr>
+          <tr><td style="padding: 8px 0; color: #6b7280;">メールアドレス</td><td style="padding: 8px 0;">${payload.email}</td></tr>
+          <tr><td style="padding: 8px 0; color: #6b7280;">電話番号</td><td style="padding: 8px 0;">${payload.phone}</td></tr>
+          <tr><td style="padding: 8px 0; color: #6b7280; font-weight: bold;">ご相談日時</td><td style="padding: 8px 0; font-weight: bold; color: #0d9488;">${slotLabel}</td></tr>
+        </table>
+        <hr style="border: 1px solid #e5e7eb; margin: 20px 0;" />
+        <p style="color: #374151;">担当者よりご連絡をお待ちください。</p>
+        <p style="color: #374151;">なお、お申し込み後の相談者様都合のキャンセル・日程変更はお受けできません。あらかじめご了承ください。</p>
+        <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">ワンボディウェルネス</p>
+      </div>
+    `,
+  });
+}
+
 export async function POST(req: NextRequest) {
   let body: Partial<SubmitPayload>;
   try {
@@ -157,6 +185,13 @@ export async function POST(req: NextRequest) {
     await sendChatworkMessage(message);
   } catch (err) {
     console.error("Chatwork notification failed:", err);
+  }
+
+  // Send confirmation email to applicant
+  try {
+    await sendConfirmationEmail(payload, slot.label);
+  } catch (err) {
+    console.error("Confirmation email failed:", err);
   }
 
   return NextResponse.json({ success: true });
