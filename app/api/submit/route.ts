@@ -135,9 +135,11 @@ async function sendConfirmationEmail(payload: SubmitPayload, slotLabel: string):
           ${payload.otherNotes ? `<tr><td style="padding: 8px 0; color: #6b7280;">その他ご心配ごと</td><td style="padding: 8px 0;">${payload.otherNotes}</td></tr>` : ""}
         </table>
         <hr style="border: 1px solid #e5e7eb; margin: 20px 0;" />
-        <p style="color: #374151;">ご登録いただきましたLINEにご連絡をいたしますのでお待ちください。</p>
-        <p style="color: #374151;">なお、お申し込み後の相談者様都合のキャンセル・日程変更はお受けできません。あらかじめご了承ください。</p>
-        <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">ワンボディウェルネス</p>
+        <p style="color: #374151;">後ほどご登録いただきましたLINEにご連絡をいたしますのでお待ちください。</p>
+        <p style="color: #374151;">なお、お申し込み後の相談者様都合のキャンセル・日程変更はお受けできません。<br>あらかじめご了承ください。</p>
+        <p style="color: #374151;">お問い合わせなどはLINEの方にお願いいたします。</p>
+        <p style="color: #374151;">では、お会いできますことを楽しみにしております。</p>
+        <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">ワンボディウェルネス<br>柳下 郁子</p>
       </div>
     `,
   });
