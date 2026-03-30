@@ -105,7 +105,7 @@ async function sendChatworkMessage(message: string): Promise<void> {
 
 async function sendConfirmationEmail(payload: SubmitPayload, slotLabel: string): Promise<void> {
   await resend.emails.send({
-    from: "ワンボディウェルネス <onboarding@resend.dev>",
+    from: "ワンボディウェルネス <noreply@elevenoneprm.com>",
     to: payload.email,
     subject: "【ワンボディウェルネス】個別相談のお申し込みを受け付けました",
     html: `
