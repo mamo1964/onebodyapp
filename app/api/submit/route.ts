@@ -4,6 +4,7 @@ import { Resend } from "resend";
 
 const CHATWORK_API_TOKEN = "b8135c68df88cf8b9116b2f055ce9803";
 const CHATWORK_ROOM_ID = "18494769";
+const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbwIksciQX-YBV9wVxm30itYGOxMGM4xU2TzunotsNvekSM-zLqNkZTBdyZUrboEZt7X/exec";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 interface SubmitPayload {
@@ -193,6 +194,17 @@ export async function POST(req: NextRequest) {
       { error: "予約の保存中にエラーが発生しました。お手数ですが、直接ご連絡ください。" },
       { status: 500 }
     );
+  }
+
+  // Send data to Google Sheets
+  try {
+    await fetch(GOOGLE_SHEETS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...payload, slotLabel: slot.label }),
+    });
+  } catch (err) {
+    console.error("Google Sheets write failed:", err);
   }
 
   // Send Chatwork notification
