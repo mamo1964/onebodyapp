@@ -346,7 +346,7 @@ export default function ConsultationForm() {
                 id="phone"
                 type="tel"
                 className={`form-input ${errors.phone ? "border-red-400 focus:ring-red-400" : ""}`}
-                placeholder="例：090-1234-5678"
+                placeholder="例：09012345678（ハイフン不要）"
                 value={formData.phone}
                 onChange={(e) => updateField("phone", e.target.value)}
                 autoComplete="tel"
@@ -378,10 +378,10 @@ export default function ConsultationForm() {
                 id="birthdate"
                 type="text"
                 className={`form-input ${errors.birthdate ? "border-red-400 focus:ring-red-400" : ""}`}
-                placeholder="例：1980年5月15日"
+                placeholder="例：1980/05/15"
                 value={formData.birthdate}
                 onChange={(e) => updateField("birthdate", e.target.value)}
-                inputMode="numeric"
+                inputMode="text"
               />
               {errors.birthdate && <p className="text-red-500 text-xs mt-1">{errors.birthdate}</p>}
             </div>
