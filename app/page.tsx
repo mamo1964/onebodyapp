@@ -676,7 +676,7 @@ export default function ConsultationForm() {
             <h2 className="text-sm font-bold text-teal-700 border-b border-gray-100 pb-2">ご相談希望日時</h2>
 
             <p className="text-xs text-gray-500 leading-relaxed">
-              ご相談はZoomまたはスタジオにて（千葉県柏市）対面でも可能です。
+              ご相談はオンライン(Zoom)またはスタジオ（千葉県柏市）に来られる方は対面でも可能です。
             </p>
             <div data-error={!!errors.slotId}>
               <FieldLabel required>ご希望の日時をお選びください</FieldLabel>
