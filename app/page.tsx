@@ -270,7 +270,7 @@ export default function ConsultationForm() {
           <p className="text-gray-600 text-sm leading-relaxed">
             お申し込みありがとうございます。<br />
             メールにてお申込内容をお送りしましたので<br />
-            メールフォルダも含めご確認のお願いします。
+            迷惑メールフォルダも含めご確認のお願いします。
           </p>
         </div>
       </main>
