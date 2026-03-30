@@ -118,10 +118,24 @@ async function sendConfirmationEmail(payload: SubmitPayload, slotLabel: string):
           <tr><td style="padding: 8px 0; color: #6b7280; width: 40%;">お名前</td><td style="padding: 8px 0;">${payload.name}</td></tr>
           <tr><td style="padding: 8px 0; color: #6b7280;">メールアドレス</td><td style="padding: 8px 0;">${payload.email}</td></tr>
           <tr><td style="padding: 8px 0; color: #6b7280;">電話番号</td><td style="padding: 8px 0;">${payload.phone}</td></tr>
+          <tr><td style="padding: 8px 0; color: #6b7280;">LINEオープンチャット登録名</td><td style="padding: 8px 0;">${payload.lineName}</td></tr>
+          <tr><td style="padding: 8px 0; color: #6b7280;">生年月日</td><td style="padding: 8px 0;">${payload.birthdate}</td></tr>
+          <tr><td style="padding: 8px 0; color: #6b7280;">お住まい地域</td><td style="padding: 8px 0;">${payload.region}</td></tr>
+          <tr><td style="padding: 8px 0; color: #6b7280;">現在のお仕事</td><td style="padding: 8px 0;">${payload.job}</td></tr>
+          <tr><td style="padding: 8px 0; color: #6b7280;">ご家族の人数</td><td style="padding: 8px 0;">${payload.familyCount}</td></tr>
+          <tr><td style="padding: 8px 0; color: #6b7280;">身長</td><td style="padding: 8px 0;">${payload.height}cm</td></tr>
+          <tr><td style="padding: 8px 0; color: #6b7280;">体重</td><td style="padding: 8px 0;">${payload.weight}kg</td></tr>
+          <tr><td style="padding: 8px 0; color: #6b7280;">出産経験</td><td style="padding: 8px 0;">${payload.birth}</td></tr>
+          <tr><td style="padding: 8px 0; color: #6b7280;">既往歴</td><td style="padding: 8px 0;">${payload.medicalHistory}</td></tr>
+          <tr><td style="padding: 8px 0; color: #6b7280;">生理について</td><td style="padding: 8px 0;">${payload.menstruation}</td></tr>
+          <tr><td style="padding: 8px 0; color: #6b7280;">お通じについて</td><td style="padding: 8px 0;">${payload.bowel}${payload.bowelOther ? `（${payload.bowelOther}）` : ""}</td></tr>
+          <tr><td style="padding: 8px 0; color: #6b7280;">思い当たるお悩み</td><td style="padding: 8px 0;">${payload.concerns.join("、")}${payload.concernsOther ? `（その他：${payload.concernsOther}）` : ""}</td></tr>
+          <tr><td style="padding: 8px 0; color: #6b7280;">受講意欲</td><td style="padding: 8px 0;">${payload.motivation}/5</td></tr>
           <tr><td style="padding: 8px 0; color: #6b7280; font-weight: bold;">ご相談日時</td><td style="padding: 8px 0; font-weight: bold; color: #0d9488;">${slotLabel}</td></tr>
+          ${payload.otherNotes ? `<tr><td style="padding: 8px 0; color: #6b7280;">その他ご心配ごと</td><td style="padding: 8px 0;">${payload.otherNotes}</td></tr>` : ""}
         </table>
         <hr style="border: 1px solid #e5e7eb; margin: 20px 0;" />
-        <p style="color: #374151;">担当者よりご連絡をお待ちください。</p>
+        <p style="color: #374151;">ご登録いただきましたLINEにご連絡をいたしますのでお待ちください。</p>
         <p style="color: #374151;">なお、お申し込み後の相談者様都合のキャンセル・日程変更はお受けできません。あらかじめご了承ください。</p>
         <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">ワンボディウェルネス</p>
       </div>
