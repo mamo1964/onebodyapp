@@ -285,7 +285,7 @@ export default function ConsultationForm() {
           <p className="text-xs font-medium text-teal-200 mb-1">ワンボディウェルネス</p>
           <h1 className="text-base font-bold leading-snug">
             【ワンボディウェルネス】<br />
-            個別相談 お申し込みフォーム
+            個別相談 事前ヒアリングフォーム
           </h1>
         </div>
 
