@@ -294,6 +294,14 @@ export default function ConsultationForm() {
             以下のフォームに必要事項をご記入のうえ、ご希望の日時をお選びください。<br />
             <span className="text-red-500">※</span> は必須項目です。
           </p>
+          <p className="text-sm text-gray-700 leading-relaxed mt-3">
+            このシートへのご回答が<br />
+            個別相談の質を決めます。<br />
+            本音でご記入ください ✍️
+          </p>
+          <p className="text-sm text-orange-500 font-medium mt-2">
+            ⏰ 2日以内にご提出をお願いします
+          </p>
         </div>
 
         {submitStatus === "error" && (
