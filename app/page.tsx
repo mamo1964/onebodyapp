@@ -392,6 +392,25 @@ export default function ConsultationForm() {
                 inputMode="text"
               />
               {errors.birthdate && <p className="text-red-500 text-xs mt-1">{errors.birthdate}</p>}
+              {(() => {
+                const raw = formData.birthdate.replace(/[^0-9]/g, "");
+                if (raw.length === 8) {
+                  const y = parseInt(raw.slice(0, 4), 10);
+                  const m = parseInt(raw.slice(4, 6), 10);
+                  const d = parseInt(raw.slice(6, 8), 10);
+                  if (y > 1900 && m >= 1 && m <= 12 && d >= 1 && d <= 31) {
+                    const today = new Date();
+                    let age = today.getFullYear() - y;
+                    if (today.getMonth() + 1 < m || (today.getMonth() + 1 === m && today.getDate() < d)) age--;
+                    if (age >= 0 && age <= 120) {
+                      return (
+                        <p className="text-sm text-teal-700 font-medium mt-1">年齢：{age}歳</p>
+                      );
+                    }
+                  }
+                }
+                return null;
+              })()}
             </div>
 
             {/* お住まい地域 */}
