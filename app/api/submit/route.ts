@@ -66,11 +66,12 @@ function validatePayload(body: Partial<SubmitPayload>): string | null {
 }
 
 function calcAge(birthdate: string): string {
-  const raw = birthdate.replace(/[^0-9]/g, "");
-  if (raw.length !== 8) return "不明";
-  const y = parseInt(raw.slice(0, 4), 10);
-  const m = parseInt(raw.slice(4, 6), 10);
-  const d = parseInt(raw.slice(6, 8), 10);
+  const parts = birthdate.split(/[\/\-\.\s年月日]/g).filter(Boolean);
+  if (parts.length !== 3) return "不明";
+  const y = parseInt(parts[0], 10);
+  const m = parseInt(parts[1], 10);
+  const d = parseInt(parts[2], 10);
+  if (y <= 1900 || m < 1 || m > 12 || d < 1 || d > 31) return "不明";
   const today = new Date();
   let age = today.getFullYear() - y;
   if (today.getMonth() + 1 < m || (today.getMonth() + 1 === m && today.getDate() < d)) age--;
