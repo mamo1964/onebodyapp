@@ -222,7 +222,13 @@ export async function POST(req: NextRequest) {
     await fetch(GOOGLE_SHEETS_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...payload, slotLabel: slot.label }),
+      body: JSON.stringify({
+        ...payload,
+        debt: "なし（申告済み）",
+        paidCourseAgreement: "同意済み",
+        cancelAgreement: "同意済み",
+        slotLabel: slot.label,
+      }),
     });
   } catch (err) {
     console.error("Google Sheets write failed:", err);
