@@ -26,7 +26,7 @@ interface SubmitPayload {
   concerns: string[];
   concernsOther: string;
   motivation: string;
-  debt: string;
+  debt: boolean;
   paidCourseAgreement: boolean;
   slotId: string;
   cancelAgreement: boolean;
@@ -51,7 +51,7 @@ function validatePayload(body: Partial<SubmitPayload>): string | null {
   if (!body.bowel?.trim()) return "お通じについての回答は必須です";
   if (!body.concerns || body.concerns.length === 0) return "お悩みを1つ以上選択してください";
   if (!body.motivation?.trim()) return "受講意欲の回答は必須です";
-  if (!body.debt?.trim()) return "債務整理・自己破産の経験の回答は必須です";
+  if (!body.debt) return "債務整理・自己破産の経験がないことの確認が必要です";
   if (!body.paidCourseAgreement) return "有料講座ご案内への同意が必要です";
   if (!body.slotId?.trim()) return "ご相談希望日時を選択してください";
   if (!body.cancelAgreement) return "キャンセル・リスケ不可への同意が必要です";
@@ -80,7 +80,7 @@ function buildChatworkMessage(payload: SubmitPayload, slotLabel: string): string
 ■ お通じ: ${payload.bowel}${payload.bowelOther ? `（${payload.bowelOther}）` : ""}
 ■ お悩み: ${concerns}${payload.concernsOther ? `（その他：${payload.concernsOther}）` : ""}
 ■ 受講意欲: ${payload.motivation}/5
-■ 債務整理経験: ${payload.debt}
+■ 債務整理経験: なし（申告済み）
 ■ ご相談日時: ${slotLabel}
 ■ その他: ${other}
 ━━━━━━━━━━━━━━━━━━━━`;

@@ -27,7 +27,7 @@ interface FormData {
   concerns: string[];
   concernsOther: string;
   motivation: string;
-  debt: string;
+  debt: boolean;
   paidCourseAgreement: boolean;
   slotId: string;
   cancelAgreement: boolean;
@@ -119,7 +119,7 @@ const initialFormData: FormData = {
   concerns: [],
   concernsOther: "",
   motivation: "",
-  debt: "",
+  debt: false,
   paidCourseAgreement: false,
   slotId: "",
   cancelAgreement: false,
@@ -210,7 +210,7 @@ export default function ConsultationForm() {
     if (!formData.bowel) newErrors.bowel = "お通じについて選択してください";
     if (formData.concerns.length === 0) newErrors.concerns = "お悩みを1つ以上選択してください";
     if (!formData.motivation) newErrors.motivation = "受講意欲を選択してください";
-    if (!formData.debt) newErrors.debt = "債務整理・自己破産の経験を選択してください";
+    if (!formData.debt) newErrors.debt = "債務整理・自己破産の経験がないことをご確認ください";
     if (!formData.paidCourseAgreement) newErrors.paidCourseAgreement = "有料講座ご案内への同意が必要です";
     if (!formData.slotId) newErrors.slotId = "ご相談希望日時を選択してください";
     if (!formData.cancelAgreement) newErrors.cancelAgreement = "キャンセル・リスケ不可への同意が必要です";
@@ -642,21 +642,16 @@ export default function ConsultationForm() {
             {/* 債務整理 */}
             <div data-error={!!errors.debt}>
               <FieldLabel required>債務整理・自己破産の経験</FieldLabel>
-              <div className="space-y-1 mt-1">
-                {["はい、あります", "いいえ、ありません"].map((v) => (
-                  <label key={v} className="form-radio-label">
-                    <input
-                      type="radio"
-                      name="debt"
-                      value={v}
-                      checked={formData.debt === v}
-                      onChange={() => updateField("debt", v)}
-                      className="accent-teal-600 w-4 h-4 flex-shrink-0"
-                    />
-                    <span>{v}</span>
-                  </label>
-                ))}
-              </div>
+              <p className="text-sm text-gray-600 mb-2">誠に申し訳ありませんが、債務整理、自己破産の経験のある方はお申し込みができません。</p>
+              <label className="form-checkbox-label mt-1">
+                <input
+                  type="checkbox"
+                  checked={formData.debt}
+                  onChange={(e) => updateField("debt", e.target.checked)}
+                  className="accent-teal-600 w-4 h-4 flex-shrink-0 mt-0.5"
+                />
+                <span>債務整理・自己破産の経験はありません</span>
+              </label>
               {errors.debt && <p className="text-red-500 text-xs mt-1">{errors.debt}</p>}
             </div>
 
