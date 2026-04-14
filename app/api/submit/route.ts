@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
+
+// service roleキー（サーバー側のみ）でUPDATE権限を持つクライアント
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 const CHATWORK_API_TOKEN = "b8135c68df88cf8b9116b2f055ce9803";
 const CHATWORK_ROOM_ID = "18494769";
@@ -195,8 +202,8 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Mark slot as booked
-  const { error: updateError } = await supabase
+  // Mark slot as booked（service roleでRLSをバイパス）
+  const { error: updateError } = await supabaseAdmin
     .from("time_slots")
     .update({ booked: true })
     .eq("id", payload.slotId);
