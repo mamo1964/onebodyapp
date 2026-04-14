@@ -58,9 +58,22 @@ function validatePayload(body: Partial<SubmitPayload>): string | null {
   return null;
 }
 
+function calcAge(birthdate: string): string {
+  const raw = birthdate.replace(/[^0-9]/g, "");
+  if (raw.length !== 8) return "不明";
+  const y = parseInt(raw.slice(0, 4), 10);
+  const m = parseInt(raw.slice(4, 6), 10);
+  const d = parseInt(raw.slice(6, 8), 10);
+  const today = new Date();
+  let age = today.getFullYear() - y;
+  if (today.getMonth() + 1 < m || (today.getMonth() + 1 === m && today.getDate() < d)) age--;
+  return age >= 0 && age <= 120 ? `${age}歳` : "不明";
+}
+
 function buildChatworkMessage(payload: SubmitPayload, slotLabel: string): string {
   const concerns = payload.concerns.join("、");
   const other = payload.otherNotes?.trim() || "なし";
+  const age = calcAge(payload.birthdate);
 
   return `【ワンボディ 個別相談 新規申込】
 ━━━━━━━━━━━━━━━━━━━━
@@ -68,7 +81,7 @@ function buildChatworkMessage(payload: SubmitPayload, slotLabel: string): string
 ■ メール: ${payload.email}
 ■ 電話: ${payload.phone}
 ■ LINE名: ${payload.lineName}
-■ 生年月日: ${payload.birthdate}
+■ 生年月日: ${payload.birthdate}（${age}）
 ■ 地域: ${payload.region}
 ■ お仕事: ${payload.job}
 ■ 家族人数: ${payload.familyCount}
