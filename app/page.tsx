@@ -763,10 +763,12 @@ export default function ConsultationForm() {
 
             {/* キャンセル同意 */}
             <div data-error={!!errors.cancelAgreement}>
-              <FieldLabel required>キャンセル・リスケ不可への同意</FieldLabel>
-              <p className="text-xs text-gray-500 mb-2 leading-relaxed">
-                お申し込み後の相談者様都合のキャンセル・日程変更はお受けできません。ご了承のうえお申し込みください。
-              </p>
+              <FieldLabel required>キャンセル・リスケへの同意</FieldLabel>
+              <div className="bg-red-50 border-l-4 border-red-400 rounded-r-lg px-4 py-3 mb-3">
+                <p className="text-sm text-red-700 leading-relaxed font-medium">
+                  お申し込み後の相談者様都合のキャンセル・日程変更はやむを得ない事情を除きお受けできません。確実に参加できる日程でお申し込みください。
+                </p>
+              </div>
               <label className="form-checkbox-label">
                 <input
                   type="checkbox"
