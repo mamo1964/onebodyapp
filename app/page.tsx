@@ -738,7 +738,7 @@ export default function ConsultationForm() {
             <div data-error={!!errors.assignmentAgreement}>
               <FieldLabel required>課題の提出状況</FieldLabel>
               <p className="text-xs text-gray-500 mb-2 leading-relaxed">
-                個別相談は課題1〜3を期限内に提出された方が対象です。未提出の方は仮申込となります。
+                課題1〜3を期限内に提出された方が個別相談の対象です。未提出の方でも申込みは可能ですが、仮申込となります。
               </p>
               <div className="space-y-1 mt-1">
                 {[
