@@ -37,7 +37,7 @@ interface SubmitPayload {
   motivation: string;
   debt: boolean;
   paidCourseAgreement: boolean;
-  assignmentAgreement: boolean;
+  assignmentAgreement: string;
   slotId: string;
   cancelAgreement: boolean;
   otherNotes: string;
