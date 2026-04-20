@@ -11,7 +11,7 @@ const supabaseAdmin = createClient(
 
 const CHATWORK_API_TOKEN = "b8135c68df88cf8b9116b2f055ce9803";
 const CHATWORK_ROOM_ID = "415646330";
-const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbwIksciQX-YBV9wVxm30itYGOxMGM4xU2TzunotsNvekSM-zLqNkZTBdyZUrboEZt7X/exec";
+const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbw9ArIIUwADGxPfp5hvscT_sx9BMVYSB-UEOpBPc9jSu4-gauiUHgcTZIVNBsBp9tJo/exec";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 interface SubmitPayload {
