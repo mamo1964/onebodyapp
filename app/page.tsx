@@ -29,7 +29,7 @@ interface FormData {
   motivation: string;
   debt: boolean;
   paidCourseAgreement: boolean;
-  assignmentAgreement: boolean;
+  assignmentAgreement: string;
   slotId: string;
   cancelAgreement: boolean;
   otherNotes: string;
@@ -122,7 +122,7 @@ const initialFormData: FormData = {
   motivation: "",
   debt: false,
   paidCourseAgreement: false,
-  assignmentAgreement: false,
+  assignmentAgreement: "",
   slotId: "",
   cancelAgreement: false,
   otherNotes: "",
@@ -214,6 +214,7 @@ export default function ConsultationForm() {
     if (!formData.motivation) newErrors.motivation = "受講意欲を選択してください";
     if (!formData.debt) newErrors.debt = "債務整理・自己破産の経験がないことをご確認ください";
     if (!formData.paidCourseAgreement) newErrors.paidCourseAgreement = "有料講座ご案内への同意が必要です";
+    if (!formData.assignmentAgreement) newErrors.assignmentAgreement = "課題の提出状況を選択してください";
     if (!formData.slotId) newErrors.slotId = "ご相談希望日時を選択してください";
     if (!formData.cancelAgreement) newErrors.cancelAgreement = "キャンセル・リスケ不可への同意が必要です";
 
@@ -734,19 +735,30 @@ export default function ConsultationForm() {
             </div>
 
             {/* 課題提出確認 */}
-            <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-4 space-y-3">
-              <p className="text-sm text-gray-700 leading-relaxed">
-                課題1〜3を期限内に提出された方が個別相談の対象です。未提出の方は<span className="font-semibold">仮申込</span>となります。
+            <div data-error={!!errors.assignmentAgreement}>
+              <FieldLabel required>課題の提出状況</FieldLabel>
+              <p className="text-xs text-gray-500 mb-2 leading-relaxed">
+                個別相談は課題1〜3を期限内に提出された方が対象です。未提出の方は仮申込となります。
               </p>
-              <label className="form-checkbox-label">
-                <input
-                  type="checkbox"
-                  checked={formData.assignmentAgreement}
-                  onChange={(e) => updateField("assignmentAgreement", e.target.checked)}
-                  className="accent-teal-600 w-4 h-4 flex-shrink-0 mt-0.5"
-                />
-                <span className="text-sm font-medium">課題1〜3まで提出済みです</span>
-              </label>
+              <div className="space-y-1 mt-1">
+                {[
+                  { value: "提出済み", label: "課題1〜3は提出済みです" },
+                  { value: "提出します", label: "課題1〜3を必ず提出します（仮申込）" },
+                ].map((opt) => (
+                  <label key={opt.value} className="form-radio-label">
+                    <input
+                      type="radio"
+                      name="assignmentAgreement"
+                      value={opt.value}
+                      checked={formData.assignmentAgreement === opt.value}
+                      onChange={() => updateField("assignmentAgreement", opt.value)}
+                      className="accent-teal-600 w-4 h-4 flex-shrink-0"
+                    />
+                    <span>{opt.label}</span>
+                  </label>
+                ))}
+              </div>
+              {errors.assignmentAgreement && <p className="text-red-500 text-xs mt-1">{errors.assignmentAgreement}</p>}
             </div>
 
             {/* キャンセル同意 */}
