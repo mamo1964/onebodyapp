@@ -35,6 +35,7 @@ interface SubmitPayload {
   motivation: string;
   debt: boolean;
   paidCourseAgreement: boolean;
+  assignmentAgreement: boolean;
   slotId: string;
   cancelAgreement: boolean;
   otherNotes: string;
@@ -102,6 +103,7 @@ function buildChatworkMessage(payload: SubmitPayload, slotLabel: string): string
 ■ お悩み: ${concerns}${payload.concernsOther ? `（その他：${payload.concernsOther}）` : ""}
 ■ 受講意欲: ${payload.motivation}/5
 ■ 債務整理経験: なし（申告済み）
+■ 課題提出: ${payload.assignmentAgreement ? "提出します" : "仮申込"}
 ■ ご相談日時: ${slotLabel}
 ■ その他: ${other}
 ━━━━━━━━━━━━━━━━━━━━`;
@@ -226,6 +228,7 @@ export async function POST(req: NextRequest) {
         ...payload,
         debt: "なし（申告済み）",
         paidCourseAgreement: "同意済み",
+        assignmentAgreement: payload.assignmentAgreement ? "提出します" : "仮申込",
         cancelAgreement: "同意済み",
         slotLabel: slot.label,
       }),

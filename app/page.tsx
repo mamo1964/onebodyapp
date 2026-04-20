@@ -29,6 +29,7 @@ interface FormData {
   motivation: string;
   debt: boolean;
   paidCourseAgreement: boolean;
+  assignmentAgreement: boolean;
   slotId: string;
   cancelAgreement: boolean;
   otherNotes: string;
@@ -121,6 +122,7 @@ const initialFormData: FormData = {
   motivation: "",
   debt: false,
   paidCourseAgreement: false,
+  assignmentAgreement: false,
   slotId: "",
   cancelAgreement: false,
   otherNotes: "",
@@ -729,6 +731,22 @@ export default function ConsultationForm() {
                 </div>
               )}
               {errors.slotId && <p className="text-red-500 text-xs mt-1">{errors.slotId}</p>}
+            </div>
+
+            {/* 課題提出確認 */}
+            <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-4 space-y-3">
+              <p className="text-sm text-gray-700 leading-relaxed">
+                課題1〜3を期限内に提出された方が個別相談の対象です。未提出の方は<span className="font-semibold">仮申込</span>となります。
+              </p>
+              <label className="form-checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={formData.assignmentAgreement}
+                  onChange={(e) => updateField("assignmentAgreement", e.target.checked)}
+                  className="accent-teal-600 w-4 h-4 flex-shrink-0 mt-0.5"
+                />
+                <span className="text-sm font-medium">はい、課題1〜3を必ず提出します</span>
+              </label>
             </div>
 
             {/* キャンセル同意 */}
