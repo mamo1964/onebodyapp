@@ -745,7 +745,7 @@ export default function ConsultationForm() {
                   onChange={(e) => updateField("assignmentAgreement", e.target.checked)}
                   className="accent-teal-600 w-4 h-4 flex-shrink-0 mt-0.5"
                 />
-                <span className="text-sm font-medium">はい、課題1〜3を必ず提出します</span>
+                <span className="text-sm font-medium">課題1〜3まで提出済みです</span>
               </label>
             </div>
 
