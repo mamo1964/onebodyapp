@@ -729,6 +729,19 @@ export default function ConsultationForm() {
                       <span>{slot.label}</span>
                     </label>
                   ))}
+                  <label
+                    className={`slot-radio-label border-dashed ${formData.slotId === "調整希望" ? "selected" : ""}`}
+                  >
+                    <input
+                      type="radio"
+                      name="slotId"
+                      value="調整希望"
+                      checked={formData.slotId === "調整希望"}
+                      onChange={() => updateField("slotId", "調整希望")}
+                      className="accent-teal-600 w-4 h-4 flex-shrink-0"
+                    />
+                    <span>ご希望の日程がありません（調整希望）</span>
+                  </label>
                 </div>
               )}
               {errors.slotId && <p className="text-red-500 text-xs mt-1">{errors.slotId}</p>}

@@ -184,39 +184,45 @@ export async function POST(req: NextRequest) {
 
   const payload = body as SubmitPayload;
 
-  // Find the selected slot
-  const { data: slot, error: fetchError } = await supabase
-    .from("time_slots")
-    .select("id, label, booked")
-    .eq("id", payload.slotId)
-    .single();
+  let slotLabel = "調整希望";
 
-  if (fetchError || !slot) {
-    return NextResponse.json(
-      { error: "選択された日時が見つかりません。ページを再読み込みして再度お試しください。" },
-      { status: 400 }
-    );
-  }
+  if (payload.slotId !== "調整希望") {
+    // Find the selected slot
+    const { data: slot, error: fetchError } = await supabase
+      .from("time_slots")
+      .select("id, label, booked")
+      .eq("id", payload.slotId)
+      .single();
 
-  if (slot.booked) {
-    return NextResponse.json(
-      { error: "選択された日時はすでに予約済みです。別の日時をお選びください。" },
-      { status: 409 }
-    );
-  }
+    if (fetchError || !slot) {
+      return NextResponse.json(
+        { error: "選択された日時が見つかりません。ページを再読み込みして再度お試しください。" },
+        { status: 400 }
+      );
+    }
 
-  // Mark slot as booked（service roleでRLSをバイパス）
-  const { error: updateError } = await supabaseAdmin
-    .from("time_slots")
-    .update({ booked: true })
-    .eq("id", payload.slotId);
+    if (slot.booked) {
+      return NextResponse.json(
+        { error: "選択された日時はすでに予約済みです。別の日時をお選びください。" },
+        { status: 409 }
+      );
+    }
 
-  if (updateError) {
-    console.error("Failed to update slot:", updateError);
-    return NextResponse.json(
-      { error: "予約の保存中にエラーが発生しました。お手数ですが、直接ご連絡ください。" },
-      { status: 500 }
-    );
+    // Mark slot as booked（service roleでRLSをバイパス）
+    const { error: updateError } = await supabaseAdmin
+      .from("time_slots")
+      .update({ booked: true })
+      .eq("id", payload.slotId);
+
+    if (updateError) {
+      console.error("Failed to update slot:", updateError);
+      return NextResponse.json(
+        { error: "予約の保存中にエラーが発生しました。お手数ですが、直接ご連絡ください。" },
+        { status: 500 }
+      );
+    }
+
+    slotLabel = slot.label;
   }
 
   // Send data to Google Sheets
@@ -230,7 +236,7 @@ export async function POST(req: NextRequest) {
         paidCourseAgreement: "同意済み",
         assignmentAgreement: payload.assignmentAgreement || "仮申込",
         cancelAgreement: "同意済み",
-        slotLabel: slot.label,
+        slotLabel,
       }),
     });
   } catch (err) {
@@ -238,7 +244,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Send Chatwork notification
-  const message = buildChatworkMessage(payload, slot.label);
+  const message = buildChatworkMessage(payload, slotLabel);
   try {
     await sendChatworkMessage(message);
   } catch (err) {
@@ -247,7 +253,7 @@ export async function POST(req: NextRequest) {
 
   // Send confirmation email to applicant
   try {
-    await sendConfirmationEmail(payload, slot.label);
+    await sendConfirmationEmail(payload, slotLabel);
   } catch (err) {
     console.error("Confirmation email failed:", err);
   }
