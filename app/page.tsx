@@ -822,6 +822,18 @@ export default function ConsultationForm() {
 
           {/* Submit Button */}
           <div className="pb-8">
+            {Object.keys(errors).filter((k) => errors[k as keyof FormData]).length > 0 && (
+              <div className="bg-red-50 border border-red-300 rounded-lg px-4 py-3 mb-2">
+                <p className="text-sm font-medium text-red-700 mb-1">以下の項目を確認してください：</p>
+                <ul className="text-sm text-red-600 list-disc list-inside space-y-0.5">
+                  {(Object.keys(errors) as (keyof FormData)[])
+                    .filter((k) => errors[k])
+                    .map((k) => (
+                      <li key={k}>{errors[k]}</li>
+                    ))}
+                </ul>
+              </div>
+            )}
             <button
               type="submit"
               disabled={submitting}
