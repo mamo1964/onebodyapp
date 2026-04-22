@@ -14,7 +14,7 @@ export async function GET() {
     .from("time_slots")
     .select("id, label, booked")
     .eq("booked", false)
-    .order("id");
+    .order("sort_order");
 
   if (error) {
     console.error("Failed to fetch slots:", error);
