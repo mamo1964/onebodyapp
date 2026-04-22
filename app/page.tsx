@@ -16,6 +16,7 @@ interface FormData {
   birthdate: string;
   region: string;
   job: string;
+  jobOther: string;
   familyCount: string;
   height: string;
   weight: string;
@@ -110,6 +111,7 @@ const initialFormData: FormData = {
   birthdate: "",
   region: "",
   job: "",
+  jobOther: "",
   familyCount: "",
   height: "",
   weight: "",
@@ -202,7 +204,22 @@ export default function ConsultationForm() {
     }
     if (!formData.phone.trim()) newErrors.phone = "電話番号を入力してください";
     if (!formData.lineName.trim()) newErrors.lineName = "LINE登録名を入力してください";
-    if (!formData.birthdate.trim()) newErrors.birthdate = "生年月日を入力してください";
+    if (!formData.birthdate.trim()) {
+      newErrors.birthdate = "生年月日を入力してください";
+    } else {
+      const parts = formData.birthdate.split(/[\/\-\.\s年月日]/g).filter(Boolean);
+      if (parts.length !== 3) {
+        newErrors.birthdate = "正しい日付を入力してください（例：1980/05/15）";
+      } else {
+        const y = parseInt(parts[0], 10);
+        const m = parseInt(parts[1], 10);
+        const d = parseInt(parts[2], 10);
+        const date = new Date(y, m - 1, d);
+        if (date.getFullYear() !== y || date.getMonth() !== m - 1 || date.getDate() !== d) {
+          newErrors.birthdate = "正しい日付を入力してください（例：1980/05/15）";
+        }
+      }
+    }
     if (!formData.region) newErrors.region = "お住まい地域を選択してください";
     if (!formData.job) newErrors.job = "現在のお仕事を選択してください";
     if (!formData.familyCount) newErrors.familyCount = "家族の人数を選択してください";
@@ -308,12 +325,6 @@ export default function ConsultationForm() {
             ⏰ 2日以内にご提出をお願いします
           </p>
         </div>
-
-        {submitStatus === "error" && (
-          <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-4 text-sm text-red-700">
-            {errorMessage}
-          </div>
-        )}
 
         <form onSubmit={handleSubmit} noValidate className="space-y-0">
 
@@ -454,6 +465,17 @@ export default function ConsultationForm() {
                 ))}
               </div>
               {errors.job && <p className="text-red-500 text-xs mt-1">{errors.job}</p>}
+              {formData.job === "その他" && (
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    className="form-input"
+                    placeholder="お仕事の内容をご記入ください"
+                    value={formData.jobOther}
+                    onChange={(e) => updateField("jobOther", e.target.value)}
+                  />
+                </div>
+              )}
             </div>
 
             {/* 家族人数 */}
@@ -851,6 +873,11 @@ export default function ConsultationForm() {
 
           {/* Submit Button */}
           <div className="pb-8">
+            {submitStatus === "error" && (
+              <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-3 text-sm text-red-700">
+                {errorMessage}
+              </div>
+            )}
             {Object.keys(errors).filter((k) => errors[k as keyof FormData]).length > 0 && (
               <div className="bg-red-50 border border-red-300 rounded-lg px-4 py-3 mb-2">
                 <p className="text-sm font-medium text-red-700 mb-1">以下の項目を確認してください：</p>
