@@ -703,7 +703,8 @@ export default function ConsultationForm() {
             <h2 className="text-sm font-bold text-teal-700 border-b border-gray-100 pb-2">ご相談希望日時</h2>
 
             <p className="text-xs text-gray-500 leading-relaxed">
-              ご相談はオンライン(Zoom)またはスタジオ（常磐線柏駅徒歩3分）に来られる方は対面でも可能です。
+              ご相談はオンライン(Zoom)またはスタジオ（常磐線柏駅徒歩3分）に来られる方は対面でも可能です。<br />
+              スタジオでのリアル面談ご希望の方は最下部にある連絡事項欄に「スタジオ面談希望」とご記入ください。
             </p>
             <div data-error={!!errors.slotId}>
               <FieldLabel required>ご希望の日時をお選びください</FieldLabel>
@@ -833,15 +834,15 @@ export default function ConsultationForm() {
               )}
             </div>
 
-            {/* その他ご心配ごと */}
+            {/* 連絡・ご質問等 */}
             <div>
-              <FieldLabel htmlFor="otherNotes">その他ご心配ごと</FieldLabel>
+              <FieldLabel htmlFor="otherNotes">連絡・ご質問等</FieldLabel>
               <p className="text-xs text-gray-400 mb-1">任意</p>
               <textarea
                 id="otherNotes"
                 className="form-input resize-none"
                 rows={3}
-                placeholder="ご不明な点やご心配なことがあればご記入ください"
+                placeholder="ご不安ご不明点やスタジオ面談を希望の方はご記入ください"
                 value={formData.otherNotes}
                 onChange={(e) => updateField("otherNotes", e.target.value)}
               />
