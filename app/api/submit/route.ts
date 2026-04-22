@@ -39,6 +39,7 @@ interface SubmitPayload {
   paidCourseAgreement: boolean;
   assignmentAgreement: string;
   slotId: string;
+  preferredTimes: string[];
   cancelAgreement: boolean;
   otherNotes: string;
 }
@@ -106,7 +107,7 @@ function buildChatworkMessage(payload: SubmitPayload, slotLabel: string): string
 ■ 受講意欲: ${payload.motivation}/5
 ■ 債務整理経験: なし（申告済み）
 ■ 課題提出: ${payload.assignmentAgreement === "提出します" ? "提出します（仮登録）" : payload.assignmentAgreement || "仮申込"}
-■ ご相談日時: ${slotLabel}
+■ ご相談日時: ${slotLabel}${payload.slotId === "調整希望" && payload.preferredTimes?.length ? `\n■ 希望時間帯: ${payload.preferredTimes.join("、")}` : ""}
 ■ その他: ${other}
 ━━━━━━━━━━━━━━━━━━━━`;
 }
@@ -158,6 +159,7 @@ async function sendConfirmationEmail(payload: SubmitPayload, slotLabel: string):
           <tr><td style="padding: 8px 0; color: #6b7280;">思い当たるお悩み</td><td style="padding: 8px 0;">${payload.concerns.join("、")}${payload.concernsOther ? `（その他：${payload.concernsOther}）` : ""}</td></tr>
           <tr><td style="padding: 8px 0; color: #6b7280;">受講意欲</td><td style="padding: 8px 0;">${payload.motivation}/5</td></tr>
           <tr><td style="padding: 8px 0; color: #6b7280; font-weight: bold;">ご相談日時</td><td style="padding: 8px 0; font-weight: bold; color: #0d9488;">${slotLabel}</td></tr>
+          ${payload.slotId === "調整希望" && payload.preferredTimes?.length ? `<tr><td style="padding: 8px 0; color: #6b7280;">ご希望の時間帯</td><td style="padding: 8px 0;">${payload.preferredTimes.join("、")}</td></tr>` : ""}
           ${payload.otherNotes ? `<tr><td style="padding: 8px 0; color: #6b7280;">その他ご心配ごと</td><td style="padding: 8px 0;">${payload.otherNotes}</td></tr>` : ""}
         </table>
         <hr style="border: 1px solid #e5e7eb; margin: 20px 0;" />

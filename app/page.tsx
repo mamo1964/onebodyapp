@@ -31,6 +31,7 @@ interface FormData {
   paidCourseAgreement: boolean;
   assignmentAgreement: string;
   slotId: string;
+  preferredTimes: string[];
   cancelAgreement: boolean;
   otherNotes: string;
 }
@@ -124,6 +125,7 @@ const initialFormData: FormData = {
   paidCourseAgreement: false,
   assignmentAgreement: "",
   slotId: "",
+  preferredTimes: [],
   cancelAgreement: false,
   otherNotes: "",
 };
@@ -743,12 +745,34 @@ export default function ConsultationForm() {
                     <span>ご希望の日程がありません（調整希望）</span>
                   </label>
                   {formData.slotId === "調整希望" && (
-                    <div className="mt-2 bg-teal-50 border border-teal-300 rounded-lg px-4 py-3">
-                      <p className="text-sm text-teal-800 leading-relaxed">
-                        LINEにて日程を調整します。<br />
-                        ワンボディウェルネス公式LINEに<strong>「個別相談希望」</strong>と投稿しましたか？<br />
-                        <span className="text-red-600 font-medium">投稿されないと調整ができません。</span>
-                      </p>
+                    <div className="mt-2 bg-teal-50 border border-teal-300 rounded-lg px-4 py-3 space-y-3">
+                      <p className="text-sm text-teal-800 font-medium">希望枠にあわせLINEで面談候補日を提案します</p>
+                      <p className="text-xs text-teal-700">ご都合のよい時間帯をお選びください（複数可）</p>
+                      <div className="grid grid-cols-2 gap-1">
+                        {[
+                          "平日 午前",
+                          "平日 午後",
+                          "平日 夜間",
+                          "休日 午前",
+                          "休日 午後",
+                          "休日 夜間",
+                        ].map((t) => (
+                          <label key={t} className="form-checkbox-label text-sm">
+                            <input
+                              type="checkbox"
+                              checked={formData.preferredTimes.includes(t)}
+                              onChange={() => {
+                                const next = formData.preferredTimes.includes(t)
+                                  ? formData.preferredTimes.filter((x) => x !== t)
+                                  : [...formData.preferredTimes, t];
+                                updateField("preferredTimes", next);
+                              }}
+                              className="accent-teal-600 w-4 h-4 flex-shrink-0"
+                            />
+                            <span>{t}</span>
+                          </label>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
