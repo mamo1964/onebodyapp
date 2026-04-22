@@ -188,6 +188,20 @@ export async function POST(req: NextRequest) {
 
   const payload = body as SubmitPayload;
 
+  // メール重複チェック
+  const { data: existing } = await getSupabaseAdmin()
+    .from("submissions")
+    .select("id")
+    .eq("email", payload.email)
+    .single();
+
+  if (existing) {
+    return NextResponse.json(
+      { error: "このメールアドレスはすでにお申し込み済みです。" },
+      { status: 409 }
+    );
+  }
+
   let slotLabel = "調整希望";
 
   if (payload.slotId !== "調整希望") {
@@ -261,6 +275,11 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error("Confirmation email failed:", err);
   }
+
+  // メールをsubmissionsに記録
+  await getSupabaseAdmin()
+    .from("submissions")
+    .insert({ email: payload.email });
 
   return NextResponse.json({ success: true });
 }
