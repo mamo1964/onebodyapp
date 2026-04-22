@@ -746,7 +746,11 @@ export default function ConsultationForm() {
                   </label>
                   {formData.slotId === "調整希望" && (
                     <div className="mt-2 bg-teal-50 border border-teal-300 rounded-lg px-4 py-3 space-y-3">
-                      <p className="text-sm text-teal-800 font-medium">希望枠にあわせLINEで面談候補日を提案します</p>
+                      <p className="text-sm text-teal-800 font-medium leading-relaxed">
+                        希望枠にあわせLINEで面談候補日を提案しますので<br />
+                        LINEに必ずお名前と「個別相談」と投稿してください<br />
+                        <span className="text-red-600">投稿がないとご連絡ができません</span>
+                      </p>
                       <p className="text-xs text-teal-700">ご都合のよい時間帯をお選びください（複数可）</p>
                       <div className="grid grid-cols-2 gap-1">
                         {[
