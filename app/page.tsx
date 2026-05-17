@@ -249,10 +249,15 @@ export default function ConsultationForm() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!validate()) {
-      // Scroll to first error
-      const firstErrorEl = document.querySelector("[data-error='true']");
-      if (firstErrorEl) {
-        firstErrorEl.scrollIntoView({ behavior: "smooth", block: "center" });
+      // 調整希望で時間枠未選択の場合は時間枠エリアに直接スクロール
+      const preferredTimesEl = document.getElementById("preferred-times-section");
+      if (preferredTimesEl && formData.slotId === "調整希望" && formData.preferredTimes.length === 0) {
+        preferredTimesEl.scrollIntoView({ behavior: "smooth", block: "center" });
+      } else {
+        const firstErrorEl = document.querySelector("[data-error='true']");
+        if (firstErrorEl) {
+          firstErrorEl.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
       }
       return;
     }
@@ -824,7 +829,7 @@ export default function ConsultationForm() {
                     <span>ご希望の日程がありません（調整希望）</span>
                   </label>
                   {formData.slotId === "調整希望" && (
-                    <div className={`mt-2 rounded-lg px-4 py-3 space-y-3 ${errors.slotId ? "bg-red-50 border border-red-400" : "bg-teal-50 border border-teal-300"}`}>
+                    <div id="preferred-times-section" className={`mt-2 rounded-lg px-4 py-3 space-y-3 ${errors.slotId ? "bg-red-50 border border-red-400" : "bg-teal-50 border border-teal-300"}`}>
                       <p className="text-sm text-teal-800 font-medium leading-relaxed">
                         希望枠にあわせLINEで面談候補日を提案しますので<br />
                         LINEに必ずお名前と「個別相談」と投稿してください<br />
