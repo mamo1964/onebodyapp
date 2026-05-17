@@ -239,6 +239,7 @@ export default function ConsultationForm() {
     if (!formData.paidCourseAgreement) newErrors.paidCourseAgreement = "有料講座ご案内への同意が必要です";
     if (!formData.assignmentAgreement) newErrors.assignmentAgreement = "課題の提出状況を選択してください";
     if (!formData.slotId) newErrors.slotId = "ご相談希望日時を選択してください";
+    if (formData.slotId === "調整希望" && formData.preferredTimes.length === 0) newErrors.slotId = "ご希望の時間枠を1つ以上選択してください";
     if (!formData.cancelAgreement) newErrors.cancelAgreement = "キャンセル・リスケ不可への同意が必要です";
 
     setErrors(newErrors);
@@ -855,6 +856,9 @@ export default function ConsultationForm() {
                           </label>
                         ))}
                       </div>
+                      {formData.preferredTimes.length === 0 && (
+                        <p className="text-red-500 text-xs font-medium">時間枠を1つ以上選択してください</p>
+                      )}
                     </div>
                   )}
                 </div>
