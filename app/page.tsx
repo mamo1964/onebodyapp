@@ -824,7 +824,7 @@ export default function ConsultationForm() {
                     <span>ご希望の日程がありません（調整希望）</span>
                   </label>
                   {formData.slotId === "調整希望" && (
-                    <div className="mt-2 bg-teal-50 border border-teal-300 rounded-lg px-4 py-3 space-y-3">
+                    <div className={`mt-2 rounded-lg px-4 py-3 space-y-3 ${errors.slotId ? "bg-red-50 border border-red-400" : "bg-teal-50 border border-teal-300"}`}>
                       <p className="text-sm text-teal-800 font-medium leading-relaxed">
                         希望枠にあわせLINEで面談候補日を提案しますので<br />
                         LINEに必ずお名前と「個別相談」と投稿してください<br />
