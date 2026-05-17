@@ -28,6 +28,8 @@ interface FormData {
   concerns: string[];
   concernsOther: string;
   motivation: string;
+  pastConsultation: string;
+  paidConsultationInterest: boolean;
   debt: string;
   paidCourseAgreement: boolean;
   assignmentAgreement: string;
@@ -123,6 +125,8 @@ const initialFormData: FormData = {
   concerns: [],
   concernsOther: "",
   motivation: "",
+  pastConsultation: "",
+  paidConsultationInterest: false,
   debt: "",
   paidCourseAgreement: false,
   assignmentAgreement: "",
@@ -685,6 +689,47 @@ export default function ConsultationForm() {
               {errors.motivation && <p className="text-red-500 text-xs mt-1">{errors.motivation}</p>}
             </div>
 
+            {/* 過去の個別相談 */}
+            <div>
+              <FieldLabel required>過去に柳下郁子の無料個別相談を受けたことがありますか？</FieldLabel>
+              <div className="flex gap-4 mt-2">
+                {[{ value: "yes", label: "はい" }, { value: "no", label: "いいえ" }].map(({ value, label }) => (
+                  <label key={value} className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="pastConsultation"
+                      value={value}
+                      checked={formData.pastConsultation === value}
+                      onChange={() => updateField("pastConsultation", value)}
+                      className="accent-teal-600 w-4 h-4"
+                    />
+                    <span className="text-sm">{label}</span>
+                  </label>
+                ))}
+              </div>
+              {formData.pastConsultation === "yes" && (
+                <div className="mt-3 space-y-3">
+                  <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 text-sm text-amber-800">
+                    残念ながら、過去に一度お受けいただいた方は、再度無料で個別相談を受けることはできません。その代わり、有料であればお引き受けすることが可能です。
+                  </div>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={formData.paidConsultationInterest}
+                      onChange={(e) => updateField("paidConsultationInterest", e.target.checked)}
+                      className="accent-teal-600 w-4 h-4 flex-shrink-0"
+                    />
+                    <span className="text-sm font-medium">有料でも受けたい</span>
+                  </label>
+                  {formData.paidConsultationInterest && (
+                    <div className="bg-teal-50 border border-teal-200 rounded-lg px-4 py-3 text-sm text-teal-800">
+                      詳細については、ご登録いただいたLINEの方にお送りします。
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
             {/* 債務整理 */}
             <div data-error={!!errors.debt}>
               <FieldLabel required>債務整理・自己破産の経験はありますか？</FieldLabel>
@@ -882,7 +927,7 @@ export default function ConsultationForm() {
           </div>
 
           {/* Submit Button */}
-          <div className={`pb-8 ${formData.debt === "yes" ? "hidden" : ""}`}>
+          <div className={`pb-8 ${formData.debt === "yes" || formData.pastConsultation === "yes" ? "hidden" : ""}`}>
             {submitStatus === "error" && (
               <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-3 text-sm text-red-700">
                 {errorMessage}
