@@ -28,7 +28,7 @@ interface FormData {
   concerns: string[];
   concernsOther: string;
   motivation: string;
-  debt: boolean;
+  debt: string;
   paidCourseAgreement: boolean;
   assignmentAgreement: string;
   slotId: string;
@@ -123,7 +123,7 @@ const initialFormData: FormData = {
   concerns: [],
   concernsOther: "",
   motivation: "",
-  debt: false,
+  debt: "",
   paidCourseAgreement: false,
   assignmentAgreement: "",
   slotId: "",
@@ -231,7 +231,7 @@ export default function ConsultationForm() {
     if (!formData.bowel) newErrors.bowel = "お通じについて選択してください";
     if (formData.concerns.length === 0) newErrors.concerns = "お悩みを1つ以上選択してください";
     if (!formData.motivation) newErrors.motivation = "受講意欲を選択してください";
-    if (!formData.debt) newErrors.debt = "債務整理・自己破産の経験がないことをご確認ください";
+    if (formData.debt !== "no") newErrors.debt = "債務整理・自己破産についてお答えください";
     if (!formData.paidCourseAgreement) newErrors.paidCourseAgreement = "有料講座ご案内への同意が必要です";
     if (!formData.assignmentAgreement) newErrors.assignmentAgreement = "課題の提出状況を選択してください";
     if (!formData.slotId) newErrors.slotId = "ご相談希望日時を選択してください";
@@ -687,18 +687,28 @@ export default function ConsultationForm() {
 
             {/* 債務整理 */}
             <div data-error={!!errors.debt}>
-              <FieldLabel required>債務整理・自己破産の経験</FieldLabel>
-              <p className="text-sm text-gray-600 mb-2">誠に申し訳ありませんが、債務整理、自己破産の経験のある方はお申し込みができません。</p>
-              <label className="form-checkbox-label mt-1">
-                <input
-                  type="checkbox"
-                  checked={formData.debt}
-                  onChange={(e) => updateField("debt", e.target.checked)}
-                  className="accent-teal-600 w-4 h-4 flex-shrink-0 mt-0.5"
-                />
-                <span>債務整理・自己破産の経験はありません</span>
-              </label>
-              {errors.debt && <p className="text-red-500 text-xs mt-1">{errors.debt}</p>}
+              <FieldLabel required>債務整理・自己破産の経験はありますか？</FieldLabel>
+              <div className="flex gap-4 mt-2">
+                {[{ value: "yes", label: "はい" }, { value: "no", label: "いいえ" }].map(({ value, label }) => (
+                  <label key={value} className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="debt"
+                      value={value}
+                      checked={formData.debt === value}
+                      onChange={() => updateField("debt", value)}
+                      className="accent-teal-600 w-4 h-4"
+                    />
+                    <span className="text-sm">{label}</span>
+                  </label>
+                ))}
+              </div>
+              {formData.debt === "yes" && (
+                <div className="mt-3 bg-red-50 border border-red-300 rounded-lg px-4 py-3 text-sm text-red-700 font-medium">
+                  誠に申し訳ありませんが、債務整理・自己破産の経験のある方はお申し込みいただけません。
+                </div>
+              )}
+              {errors.debt && formData.debt === "" && <p className="text-red-500 text-xs mt-1">{errors.debt}</p>}
             </div>
 
             {/* 有料講座同意 */}
@@ -872,7 +882,7 @@ export default function ConsultationForm() {
           </div>
 
           {/* Submit Button */}
-          <div className="pb-8">
+          <div className={`pb-8 ${formData.debt === "yes" ? "hidden" : ""}`}>
             {submitStatus === "error" && (
               <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-3 text-sm text-red-700">
                 {errorMessage}
