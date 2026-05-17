@@ -166,7 +166,7 @@ export default function ConsultationForm() {
     fetch(`/api/slots?t=${Date.now()}`)
       .then((res) => res.json())
       .then((data) => {
-        setSlots(data);
+        setSlots(Array.isArray(data) ? data : []);
         setSlotsLoading(false);
       })
       .catch(() => {
@@ -810,8 +810,8 @@ export default function ConsultationForm() {
             {/* 課題提出確認 */}
             <div data-error={!!errors.assignmentAgreement}>
               <FieldLabel required>課題の提出状況</FieldLabel>
-              <p className="text-xs text-gray-500 mb-2 leading-relaxed">
-                課題1〜3を期限内に提出された方が個別相談の対象です。未提出の方でも申込みは可能ですが、仮申込となります。
+              <p className="text-xs text-amber-700 font-medium mb-2 leading-relaxed bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                ⚠️ 個別相談は、課題1・2・3の3つをすべて期限内にご提出いただいた方が対象です。1つでも未提出がある場合は仮申込となります。
               </p>
               <div className="space-y-1 mt-1">
                 {[
