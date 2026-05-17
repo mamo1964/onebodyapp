@@ -927,7 +927,7 @@ export default function ConsultationForm() {
           </div>
 
           {/* Submit Button */}
-          <div className={`pb-8 ${formData.debt === "yes" || formData.pastConsultation === "yes" ? "hidden" : ""}`}>
+          <div className={`pb-8 ${formData.debt === "yes" || (formData.pastConsultation === "yes" && !formData.paidConsultationInterest) ? "hidden" : ""}`}>
             {submitStatus === "error" && (
               <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-3 text-sm text-red-700">
                 {errorMessage}
