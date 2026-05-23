@@ -35,6 +35,10 @@
       bg-white placeholder-gray-400;
   }
 
+  select.form-input {
+    @apply appearance-auto cursor-pointer;
+  }
+
   .form-radio-label {
     @apply flex items-center gap-2 cursor-pointer text-sm text-gray-700
       py-1;
